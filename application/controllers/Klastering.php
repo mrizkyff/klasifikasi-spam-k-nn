@@ -3,8 +3,6 @@
     {
         public function __construct(){
             parent::__construct();
-            $this->load->library('preprocessing');
-            $this->load->library('K_Means');
             $this->load->model('M_Dataset', 'dataset');
     
         }
@@ -26,9 +24,9 @@
         }
         public function proses_klastering(){
             // Langkah 1 get query lalu lakukan preprocessing
-            $query = 'penyakit keuangan negara Indonesia';
+            $query = 'mata uang rupiah';
             $query = $this->preprocessing->preprocess($query);
-            print_r($query);
+            // print_r($query);
             
             // Langkah 2 panggil semua dataset 
             $koleksi_data_sms = $this->dataset->get_all_dataset();
@@ -41,10 +39,10 @@
                 ];
                 array_push($arrayData, $arrayDoc);
             }
-            print_r($arrayData);
+            // print_r($arrayData);
 
             // Langkah 3 proses perhitungan kmeans
-            $hasil = $this->K_Means->get_rank($query, $arrayData);
+            $hasil = $this->kmeans->get_rank($query, $arrayData);
             print_r($hasil);
         }
     }
