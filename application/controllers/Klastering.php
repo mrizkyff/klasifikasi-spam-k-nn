@@ -24,7 +24,7 @@
         }
         public function proses_klastering(){
             // Langkah 1 get query lalu lakukan preprocessing
-            $query = 'mata uang rupiah';
+            $query = 'vaksin difteri pemerintah';
             $query = $this->preprocessing->preprocess($query);
             // print_r($query);
             

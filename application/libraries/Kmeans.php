@@ -163,7 +163,14 @@ class Kmeans
         return $bobotDokumen;
     }
 
-    public static function hitung_euclidean($bobot, $centroid){
+    public static function hitung_euclidean($bobot, $centroid, $cbaru = null){
+        if($cbaru == null){
+            $c = $bobot[$centroid];
+        }
+        else{
+            $c = $centroid;
+        }
+        
         $euclidean_distance = [];		
         foreach ($bobot as $id_doc => $value) {
             $temp = 0;	
@@ -171,7 +178,7 @@ class Kmeans
                 // jarak dari centroid
                 // print_r([$id_doc => [$term => $nilainya]]);
                 if($id_doc == $centroid){
-                    if(array_key_exists($term, $bobot[$centroid])){
+                    if(array_key_exists($term, $c)){
                         // print_r([$id_doc => ['sama dengan centroid' => [$term => $nilainya-$nilainya]]]);
                         $temp +=($nilainya-$nilainya);
                     }
@@ -179,22 +186,22 @@ class Kmeans
                 }
                 else{
                     // // kalau sama
-                    if(array_key_exists($term, $bobot[$centroid])){
-                        // print_r([$id_doc.'-'.$centroid => ['termnya sama' => [$term => pow(($nilainya - $bobot[$centroid][$term]),2)]]]);
-                        $temp += pow(($nilainya - $bobot[$centroid][$term]),2);
+                    if(array_key_exists($term, $c)){
+                        // print_r([$id_doc.'-'.$centroid => ['termnya sama' => [$term => pow(($nilainya - $c[$term]),2)]]]);
+                        $temp += pow(($nilainya - $c[$term]),2);
                     }
                     // // kalau di doclist ada, di pusat tidak ada1
-                    else if(!array_key_exists($term, $bobot[$centroid])){
+                    else if(!array_key_exists($term, $c)){
                         // print_r([$id_doc.'-'.$centroid => ['doclist ada' => [$term => pow($nilainya,2)]]]);
                         $temp += pow($nilainya,2);
                     }
                 }
             }
             // // kalau di pusat ada, di doclist tidak ada
-            foreach ($bobot[$centroid] as $term1 => $value1) {
+            foreach ($c as $term1 => $value1) {
                 if(!array_key_exists($term1, $bobot[$id_doc])){
-                    // print_r([$id_doc.'-'.$centroid => ['pusat ada' => [$term1 => pow($bobot[$centroid][$term1],2)]]]);
-                    $temp += pow($bobot[$centroid][$term1],2);
+                    // print_r([$id_doc.'-'.$centroid => ['pusat ada' => [$term1 => pow($c[$term1],2)]]]);
+                    $temp += pow($c[$term1],2);
                 }
             }
             $euclidean_distance['jarak'][$id_doc] = sqrt($temp);		
@@ -202,9 +209,6 @@ class Kmeans
         return $euclidean_distance;
     }
 
-    public static function hitung_euclidean_baru($bobot, $centroid){
-
-    }
 
     public static function bagi_cluster($jarak1, $jarak2){
         $cluster1 = [];
@@ -230,15 +234,6 @@ class Kmeans
 
     public static function hitung_centroid($cluster, $bobot){
         $means = [];
-        // $jumlah_anggota = count($cluster);
-        // print_r($cluster);
-        // print_r($bobot);die();
-        // // kalau keduanya ada nilainya
-        // foreach ($bobot as $key => $value) {
-        //     if(array_key_exists())
-        // }
-        // // kalau hanya ada di salah satu (1)
-        // // kalau hanya ada di salah satu (2)
 
         $n = count($cluster);
         $sum = [];
@@ -277,23 +272,50 @@ class Kmeans
     public static function jarak_euclidean($bobot, $debug){
 
         // ITERASI 1
+        print_r(['--- iterasi 1 ---']);
         $c1 = 1;
         $c2 = 4;
 
         $cluster1 = Kmeans::hitung_euclidean($bobot, $c1);
         $cluster2 = Kmeans::hitung_euclidean($bobot, $c2);
-        // print_r(['1'=>$cluster1]);
-        // print_r(['2'=>$cluster2]);
+        print_r($cluster1);
+        print_r($cluster2);
 
         $hasil_clustering = Kmeans::bagi_cluster($cluster1, $cluster2);
         // print_r($hasil_clustering);
 
-        // ITERASI 2 DST
         $c1_temp = $hasil_clustering['cluster1'];
         $c2_temp = $hasil_clustering['cluster2'];
         
-        $c1_baru = Kmeans::hitung_centroid($c1_temp, $bobot);
-        print_r($c1_baru);
+        // ITERASI 2 DST
+        $hasil_clustering_baru = [];
+
+        do {
+            
+            print_r(['--- iterasi 2 ---']);
+            $centroid1_baru = Kmeans::hitung_centroid($c1_temp, $bobot);
+            $centroid2_baru = Kmeans::hitung_centroid($c2_temp, $bobot);
+            
+            // print_r($centroid1_baru);
+            // print_r($centroid2_baru);
+            $cluster_baru1 = Kmeans::hitung_euclidean($bobot, $centroid1_baru, 'baru');
+            $cluster_baru2 = Kmeans::hitung_euclidean($bobot, $centroid2_baru, 'baru');
+            
+            print_r($cluster_baru1);
+            print_r($cluster_baru2);
+            
+            $hasil_clustering_baru = Kmeans::bagi_cluster($cluster_baru1, $cluster_baru2);
+            print_r($hasil_clustering_baru);
+            
+            $c1_temp = $hasil_clustering_baru['cluster1'];
+            $c2_temp = $hasil_clustering_baru['cluster2'];
+
+            print_r(['sama?' => ($hasil_clustering === $hasil_clustering_baru)]);
+        } while (($hasil_clustering === $hasil_clustering_baru) != 1);
+
+        // $cluster_baru2 = Kmeans::hitung_euclidean($bobot, $c2, $centroid2_baru);
+
+
 
     }
 }
