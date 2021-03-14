@@ -163,32 +163,14 @@ class Kmeans
         return $bobotDokumen;
     }
 
+    public static function hitung_euclidean($bobot, $c1, $c2){
+        
+    }
+
     public static function jarak_euclidean($bobot, $debug){
         $c1 = 2;
         $c2 = 4;
 
-        // print_r(['c1' => $c1]);
-        // print_r(['c2' => $c2]);
-
-        $euclids = [];
-
-        // // mencari jarak seluruh data dengan pusat1 (C1)
-        // foreach ($bobot as $key => $value) {
-        //     // print_r([$value['id_doc'] => $value['stem']]);
-        //     // jika di dokumen ada, di pusat ada
-        //     $temp = 0;
-        //     foreach ($value['stem'] as $key1 => $value1) {
-        //         print_r([$key1 => $value1]);
-        //         if(array_key_exists($key1, $c1)){
-        //             // print_r([$key1 => 'ada']);
-        //             // $euclids[$key] += pow(($c1[$key1] - $value1),2);
-        //             $temp += pow(($c1[$key1]),2);
-        //         }
-        //     }
-        //     print_r([$key => $temp]);
-        // }
-        // return $bobot;
-        // looping dokumen list
         $euclidean_distance = [];		
         // menghitung jarak dari c1
         // print_r($bobot);
@@ -226,6 +208,42 @@ class Kmeans
                 }
             }
             $euclidean_distance['jarak1'][$id_doc] = sqrt($temp);		
+        }
+
+        // menghitung jarak dari Pusat2
+        foreach ($bobot as $id_doc => $value) {
+            $temp = 0;	
+            foreach ($value as $term => $nilainya) {
+                // jarak dari c2
+                // print_r([$id_doc => [$term => $nilainya]]);
+                if($id_doc == $c2){
+                    if(array_key_exists($term, $bobot[$c2])){
+                        // print_r([$id_doc => ['sama dengan centroid' => [$term => $nilainya-$nilainya]]]);
+                        $temp +=($nilainya-$nilainya);
+                    }
+
+                }
+                else{
+                    // // kalau sama
+                    if(array_key_exists($term, $bobot[$c2])){
+                        // print_r([$id_doc.'-'.$c2 => ['termnya sama' => [$term => pow(($nilainya - $bobot[$c2][$term]),2)]]]);
+                        $temp += pow(($nilainya - $bobot[$c2][$term]),2);
+                    }
+                    // // kalau di doclist ada, di pusat tidak ada1
+                    else if(!array_key_exists($term, $bobot[$c2])){
+                        // print_r([$id_doc.'-'.$c2 => ['doclist ada' => [$term => pow($nilainya,2)]]]);
+                        $temp += pow($nilainya,2);
+                    }
+                }
+            }
+            // // kalau di pusat ada, di doclist tidak ada
+            foreach ($bobot[$c2] as $term1 => $value1) {
+                if(!array_key_exists($term1, $bobot[$id_doc])){
+                    // print_r([$id_doc.'-'.$c2 => ['pusat ada' => [$term1 => pow($bobot[$c2][$term1],2)]]]);
+                    $temp += pow($bobot[$c2][$term1],2);
+                }
+            }
+            $euclidean_distance['jarak2'][$id_doc] = sqrt($temp);		
         }
 
         print_r($euclidean_distance);
