@@ -271,15 +271,16 @@ class Kmeans
 
     public static function jarak_euclidean($bobot, $debug){
 
+        // print_r(['bobot' => $bobot]);
         // ITERASI 1
         print_r(['--- iterasi 1 ---']);
-        $c1 = 1;
-        $c2 = 4;
+        $c1 = 2100;
+        $c2 = 2101;
 
         $cluster1 = Kmeans::hitung_euclidean($bobot, $c1);
         $cluster2 = Kmeans::hitung_euclidean($bobot, $c2);
-        print_r($cluster1);
-        print_r($cluster2);
+        // print_r($cluster1);
+        // print_r($cluster2);
 
         $hasil_clustering = Kmeans::bagi_cluster($cluster1, $cluster2);
         // print_r($hasil_clustering);
@@ -290,9 +291,10 @@ class Kmeans
         // ITERASI 2 DST
         $hasil_clustering_baru = [];
 
+        $x = 1;
         do {
-            
-            print_r(['--- iterasi 2 ---']);
+            // print_r(['--- iterasi '.$x.' ---']);
+            $x+=1;
             $centroid1_baru = Kmeans::hitung_centroid($c1_temp, $bobot);
             $centroid2_baru = Kmeans::hitung_centroid($c2_temp, $bobot);
             
@@ -301,17 +303,19 @@ class Kmeans
             $cluster_baru1 = Kmeans::hitung_euclidean($bobot, $centroid1_baru, 'baru');
             $cluster_baru2 = Kmeans::hitung_euclidean($bobot, $centroid2_baru, 'baru');
             
-            print_r($cluster_baru1);
-            print_r($cluster_baru2);
+            // print_r($cluster_baru1);
+            // print_r($cluster_baru2);
             
             $hasil_clustering_baru = Kmeans::bagi_cluster($cluster_baru1, $cluster_baru2);
-            print_r($hasil_clustering_baru);
+            // print_r($hasil_clustering_baru);
             
             $c1_temp = $hasil_clustering_baru['cluster1'];
             $c2_temp = $hasil_clustering_baru['cluster2'];
 
-            print_r(['sama?' => ($hasil_clustering === $hasil_clustering_baru)]);
+            // print_r(['sama?' => ($hasil_clustering === $hasil_clustering_baru)]);
         } while (($hasil_clustering === $hasil_clustering_baru) != 1);
+        print_r($hasil_clustering_baru);
+
 
         // $cluster_baru2 = Kmeans::hitung_euclidean($bobot, $c2, $centroid2_baru);
 
