@@ -24,7 +24,7 @@
         }
         public function proses_klastering(){
             // Langkah 1 get query lalu lakukan preprocessing
-            $query = 'bagus sekali';
+            $query = 'harga cabai rawit naik';
             $query = $this->preprocessing->preprocess($query);
             // print_r($query);
             

@@ -274,8 +274,14 @@ class Kmeans
         // print_r(['bobot' => $bobot]);
         // ITERASI 1
         print_r(['--- iterasi 1 ---']);
-        $c1 = 2100;
-        $c2 = 2101;
+        $c1 = 2;
+        $c2 = 14;
+
+        // 2 9
+        // 2 13
+        // 2 14
+        // 2 18
+        // 2 21
 
         $cluster1 = Kmeans::hitung_euclidean($bobot, $c1);
         $cluster2 = Kmeans::hitung_euclidean($bobot, $c2);
@@ -283,7 +289,7 @@ class Kmeans
         // print_r($cluster2);
 
         $hasil_clustering = Kmeans::bagi_cluster($cluster1, $cluster2);
-        // print_r($hasil_clustering);
+        print_r($hasil_clustering);
 
         $c1_temp = $hasil_clustering['cluster1'];
         $c2_temp = $hasil_clustering['cluster2'];
@@ -291,9 +297,9 @@ class Kmeans
         // ITERASI 2 DST
         $hasil_clustering_baru = [];
 
-        $x = 1;
+        $x = 2;
         do {
-            // print_r(['--- iterasi '.$x.' ---']);
+            print_r(['--- iterasi '.$x.' ---']);
             $x+=1;
             $centroid1_baru = Kmeans::hitung_centroid($c1_temp, $bobot);
             $centroid2_baru = Kmeans::hitung_centroid($c2_temp, $bobot);
@@ -307,13 +313,16 @@ class Kmeans
             // print_r($cluster_baru2);
             
             $hasil_clustering_baru = Kmeans::bagi_cluster($cluster_baru1, $cluster_baru2);
-            // print_r($hasil_clustering_baru);
+            print_r($hasil_clustering_baru);
             
             $c1_temp = $hasil_clustering_baru['cluster1'];
             $c2_temp = $hasil_clustering_baru['cluster2'];
 
             // print_r(['sama?' => ($hasil_clustering === $hasil_clustering_baru)]);
-        } while (($hasil_clustering === $hasil_clustering_baru) != 1);
+            if($x == 20){
+                break;
+            }
+        } while (($hasil_clustering === $hasil_clustering_baru) == 1);
         print_r($hasil_clustering_baru);
 
 
