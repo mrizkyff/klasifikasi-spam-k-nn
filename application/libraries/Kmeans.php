@@ -273,7 +273,7 @@ class Kmeans
 
         // print_r(['bobot' => $bobot]);
         // ITERASI 1
-        print_r(['--- iterasi 1 ---']);
+        // print_r(['--- iterasi 1 ---']);
         $c1 = 2;
         $c2 = 14;
 
@@ -303,7 +303,7 @@ class Kmeans
 
         $x = 2;
         do {
-            print_r(['--- iterasi '.$x.' ---']);
+            // print_r(['--- iterasi '.$x.' ---']);
             $x+=1;
             $centroid1_baru = Kmeans::hitung_centroid($c1_temp, $bobot);
             $centroid2_baru = Kmeans::hitung_centroid($c2_temp, $bobot);

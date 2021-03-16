@@ -23,7 +23,8 @@
         }
         public function proses_klastering(){
             // Langkah 1 get query lalu lakukan preprocessing
-            $query = 'pandemi covid';
+            // $query = 'harga cabai rawit';
+            $query = $this->input->post('query');
             $query = $this->preprocessing->preprocess($query);
             // print_r($query);
             
@@ -42,7 +43,8 @@
 
             // Langkah 3 proses perhitungan kmeans
             $hasil = $this->kmeans->get_rank($query, $arrayData);
-            print_r($hasil);
+            // print_r($hasil);
+            echo json_encode($hasil);
         }
     }
     
