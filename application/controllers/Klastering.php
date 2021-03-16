@@ -6,7 +6,6 @@
             $this->load->model('M_Dataset', 'dataset');
     
         }
-
         public function generate_stem(){
             // panggil semua data dari database
             $data_sms = $this->dataset->get_all_dataset();
@@ -24,7 +23,7 @@
         }
         public function proses_klastering(){
             // Langkah 1 get query lalu lakukan preprocessing
-            $query = 'harga cabai rawit naik';
+            $query = 'pandemi covid';
             $query = $this->preprocessing->preprocess($query);
             // print_r($query);
             
