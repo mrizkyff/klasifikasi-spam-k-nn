@@ -39,7 +39,7 @@
                     <tr>
                         <td width="150px">Query</td>
                         <td>
-                            <input type="text" placeholder="Isi Pesan sebagai Query" class="form-control <?php echo ($hasil_cluster['kesimpulan'] == 'olahraga') ? 'is-valid': (($hasil_cluster['kesimpulan'] == 'ekonomi') ? 'is-invalid' : '')?>" name="query" value="<?php echo isset($query) ?  $query : ''?>">
+                            <input type="text" placeholder="Isi Pesan sebagai Query" class="form-control <?php echo ($hasil_cluster['kesimpulan'] == 'real') ? 'is-valid': (($hasil_cluster['kesimpulan'] == 'spam') ? 'is-invalid' : '')?>" name="query" value="<?php echo isset($query) ?  $query : ''?>">
                             <?php
                                 echo (($hasil_cluster['kesimpulan']) == '') ? '<small id="pesan_kategori" class="form-text text-muted">Kategori pesan akan muncul di sini </small>' : '';
                             ?>
