@@ -29,6 +29,11 @@
             $data = $this->dataset->save_dataset($data);
             echo json_encode($data);
         }
+        public function hapus(){
+            $id = $this->input->post('id');
+            $data = $this->dataset->delete_dataset($id);
+            echo json_encode($data);
+        }
     }
     
 ?>

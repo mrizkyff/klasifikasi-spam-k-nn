@@ -24,7 +24,7 @@
                                     '<td>'+response[i].tanggal+'</td>'+
                                     '<td>'+
                                         '<a href="javascript:void(0);" class="btn btn-info btn-sm editRecord" data-id="' + response[i].id + '">Edit</a>' + ' ' +
-                                        '<a href="javascript:void(0);" class="btn btn-danger btn-sm deleteRecord" data-id="' + response[i].id + '">Delete</a>' +
+                                        '<a href="javascript:void(0);" class="btn btn-danger btn-sm deleteRecord" data-id="' + response[i].id + '" data-teks="' + response[i].teks + '">Delete</a>' +
                                     '</td>'+
                                 '</tr>';
                     }
@@ -58,6 +58,47 @@
                     }
                 });
                 showDataset();
+        });
+
+        // fungsi untuk menampilkan modal hapus/delete
+        $('#show_dataset').on('click', '.deleteRecord', function (e) { 
+            e.preventDefault();
+            // alert('halo');
+            $('#modal_hapus_dataset').modal('show');
+            $("#id_hapus").val($(this).data('id'));
+            $("#teks_cluster").val($(this).data('teks'));
+            $('#konfirmasi_hapus').text($(this).data("teks"));
+        });
+        // fungsi aksi hapus/delete
+        $('#btn_hapus').click(function (e) { 
+            e.preventDefault();
+            var id = $('#id_hapus').val();
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url('dataset/hapus')?>",
+                data: {id: id},
+                dataType: "JSON",
+                success: function (response) {
+                    if(response){
+                        $('#modal_hapus_dataset').modal('hide');
+                        alert('Data Berhasil di hapus!');
+                    }
+                    else{
+                        alert('Data Gagal di hapus!');
+                    }
+                    showDataset();
+                }
+            });
+        });
+
+        // fungsi untuk menampilkan modal edit/update
+        $('#show_dataset').on('click', '.editRecord', function (e) { 
+            e.preventDefault();
+            alert('halo');
+            $('#modal_edit_dataset').modal('show');
+            $("#id").val($(this).data('id'));
+            $("#teks_dataset").val($(this).data('teks_dataset'));
+            $("#cluster_dataset").val($(this).data('cluster_dataset'));
         });
 
     });

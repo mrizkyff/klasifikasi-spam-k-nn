@@ -2,31 +2,38 @@
     class M_Dataset extends CI_Model
     {
         public function get_all_dataset(){
-            return $this->db->get('tb_berita')->result_array();
+            return $this->db->get('sms_fix')->result_array();
         }
         public function get_dataset(){
             $this->db->select('id, teks');
-            return $this->db->get('tb_berita')->result_array();
+            return $this->db->get('sms_fix')->result_array();
         }
         public function update_stem_dataset($data_stem){
-            return $this->db->update_batch('tb_berita', $data_stem,'id');
+            return $this->db->update_batch('sms_fix', $data_stem,'id');
         }
         public function update_cluster_predict($data){
-            return $this->db->update_batch('tb_berita', $data,'id');
+            return $this->db->update_batch('sms_fix', $data,'id');
         }
         public function get_cluster1(){
             $this->db->where('cluster_predict','1');
-            return $this->db->get('tb_berita')->result_array();
+            return $this->db->get('sms_fix')->result_array();
         }
         public function get_cluster2(){
             $this->db->where('cluster_predict','2');
-            return $this->db->get('tb_berita')->result_array();
+            return $this->db->get('sms_fix')->result_array();
         }
         public function reset_cluster_predict(){
             $data = [
                 'cluster_predict' => -1,
             ];
-            return $this->db->update('tb_berita', $data);
+            return $this->db->update('sms_fix', $data);
+        }
+        public function save_dataset($data){
+            return $this->db->insert('sms_fix', $data);	
+        }
+        public function delete_dataset($id){
+            $this->db->where('id',$id);
+			return $this->db->delete('sms_fix');
         }
     }
     
