@@ -38,9 +38,11 @@
                     'stem' => implode(' ',$this->preprocessing->preprocess($value['teks']))
                 );
             }
+            $status = 0;
             if($this->dataset->update_stem_dataset($data_stem)){
-                echo 'sukses isi stem!';
+                $status = 1;
             }
+            echo json_encode($status);
         }
         public function proses_klastering($query){
             // Langkah 1 get query lalu lakukan preprocessing

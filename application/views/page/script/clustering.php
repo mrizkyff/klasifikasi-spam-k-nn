@@ -11,29 +11,24 @@
             "searching": false
         });
 
-        // $('#btn_hitung_cluster').click(function (e) { 
-        //     var query = $('#query').val();
-        //     $.ajax({
-        //         type: "get",
-        //         url: "<?php echo base_url('klastering/index')?>",
-        //         data: {query: query},
-        //         dataType: "JSON",
-        //         success: function (response) {
-        //             console.log(response);
-        //             if (response['kesimpulan'] == 'ekonomi'){
-        //                 $('#query').addClass('is-valid');
-        //                 $('#pesan_valid').text(response['kesimpulan']);
-        //                 $('#pesan_kategori').hide();
-        //             }
-        //             else if(response['kesimpulan'] == 'olahraga'){
-        //                 $('#query').addClass('is-valid');
-        //                 $('#pesan_invalid').text(response['kesimpulan']);
-        //                 $('#pesan_kategori').hide();
-
-        //             }
-        //         }
-        //     });
-        // });
+        $('#btn_generate').click(function (e) { 
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url('klastering/generate_stem')?>",
+                data: {data: '123'},
+                dataType: "JSON",
+                success: function (response) {
+                    if(response == 1){
+                        alert('stem berhasil di perbarui!');
+                    }
+                    else{
+                        alert('stem tidak dapat diperbarui');
+                    }
+                    console.log(response);
+                }
+            });
+        });
         console.log('xixixi');
     });
 </script>
