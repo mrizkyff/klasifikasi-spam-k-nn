@@ -7,9 +7,13 @@
     
         }
         public function index(){
-            $query = $this->input->post('query');
+            $data['query'] = $this->input->post('query');
+            $data['hasil_cluster']['kesimpulan'] = '';
+            if(isset($data['query'])){
+                $data['hasil_cluster'] = $this->proses_klastering($data['query']);
+            }
+
             $data['dataset'] = $this->dataset->get_dataset();
-            $data['hasil_cluster'] = $this->proses_klastering($query);
             $data['cluster1_db'] = $this->dataset->get_cluster1();
             $data['cluster2_db'] = $this->dataset->get_cluster2();
 
@@ -20,7 +24,8 @@
             $this->load->view('page/script/clustering');
             // reset cluster predict
             $this->dataset->reset_cluster_predict();
-            
+            // ke ajax
+            // echo json_encode($data['hasil_cluster']);
         }
         public function generate_stem(){
             // panggil semua data dari database
@@ -37,10 +42,10 @@
                 echo 'sukses isi stem!';
             }
         }
-        public function proses_klastering(){
+        public function proses_klastering($query){
             // Langkah 1 get query lalu lakukan preprocessing
-            $query = 'mata uang rupiah';
-            // $query = 'ya boong baik';
+            // $query = 'mata uang rupiah';
+            // $query = 'olahraga pandemi';
             // $query = 'tugas kuliah lagi deadline mahasiswa';
             // $query = $this->input->post('query');
             $query = $this->preprocessing->preprocess($query);

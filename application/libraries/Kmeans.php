@@ -130,6 +130,7 @@ class Kmeans
 
     public static function bobot($query, $dokumen_term, $idf, $debug)
     {
+        $bobotDokumen = [];
         // pembobotan query
         $bobotQuery =[];
         foreach ($idf as $key => $value) {
@@ -139,9 +140,10 @@ class Kmeans
                 }
             }
         }
+        $bobotDokumen['1'] = $bobotQuery;
+
 
         // pembobotan setiap dokumen
-        $bobotDokumen = [];
         foreach ($dokumen_term as $index => $dokumen) {
             $arrayTampung = [];
             foreach ($idf as $key => $value) {
@@ -158,7 +160,7 @@ class Kmeans
         // Array Bobot
         // $arrayBobot = ["query" => $bobotQuery, "stem" => $bobotDokumen];
         // array_push($bobotDokumen, array('id_doc' => 'q', 'stem' => '123'));
-        $bobotDokumen['1'] = $bobotQuery;
+
 
         return $bobotDokumen;
     }
@@ -223,6 +225,9 @@ class Kmeans
                 else if($value1 > $jarak2[$key][$key1]){
                     $cluster2[] = $key1;
                 }
+                else{
+                    $cluster1[] = $key1;
+                }
                 // print_r([$jarak2[$key][$key1]]);
             }
         }
@@ -284,7 +289,16 @@ class Kmeans
         // 2 18
         // 2 21
 
-        // all sms
+        // all smsv2
+        // 2 14
+        // 2 15
+        // 2 18
+        // 2 19
+        // 2 21
+        // 2 22
+
+        // modul
+        // 1 4
 
 
         $cluster1 = Kmeans::hitung_euclidean($bobot, $c1);

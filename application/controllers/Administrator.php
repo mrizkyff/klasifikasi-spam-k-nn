@@ -12,7 +12,7 @@
             $this->load->view('page/Administrator');
             $this->load->view('templates/menu_bar');
             $this->load->view('templates/footer');
-        }
+        }  
     }
     
 ?>

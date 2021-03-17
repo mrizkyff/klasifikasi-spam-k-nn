@@ -2,7 +2,9 @@
     // print_r($hasil_cluster['hasil_clustering']['cluster1']);
     // die();
     // var_dump($cluster1_db);
-    $query = 'mata uang rupiah';
+    // var_dump($query);
+    // var_dump($hasil_cluster['kesimpulan']);
+    // $query = 'mata uang rupiah';
 ?>
 <!-- judul halaman -->
 <div class="content-wrapper">
@@ -36,28 +38,44 @@
                 <table width="100%">
                     <tr>
                         <td width="150px">Query</td>
-                        <td><input type="text" placeholder="Isi Pesan sebagai Query" class="form-control"></td>
-                        <td width="150px"><input type='submit' class="btn btn-primary" value="Hitung Cluster"></td>
+                        <td>
+                            <input type="text" placeholder="Isi Pesan sebagai Query" class="form-control <?php echo ($hasil_cluster['kesimpulan'] == 'olahraga') ? 'is-valid': (($hasil_cluster['kesimpulan'] == 'ekonomi') ? 'is-invalid' : '')?>" name="query" value="<?php echo isset($query) ?  $query : ''?>">
+                            <?php
+                                echo (($hasil_cluster['kesimpulan']) == '') ? '<small id="pesan_kategori" class="form-text text-muted">Kategori pesan akan muncul di sini </small>' : '';
+                            ?>
+                            
+                            <div class="valid-feedback">
+                                <p>Pesan tersebut termasuk cluster <b><?php echo $hasil_cluster['kesimpulan']?></b></p>
+                            </div>
+                            <div class="invalid-feedback">
+                                <p>Pesan tersebut termasuk cluster <b><?php echo $hasil_cluster['kesimpulan']?></b></p>
+                            </div>
+                        </td>
+                        
+                        <td width="150px" style="vertical-align: top;"><input type='submit' class="btn btn-primary" value="Hitung Cluster" id="btn_hitung_cluster"></td>
                     </tr>
                 </table>
             </form>
             <div class="row mt-3">
                 <div class="col">
                     <h3>Cluster 1</h3>
-                    <table id="tb_cluster1" class="table table-bordered table-hover">
+                    <table id="tb_cluster1" class="table table-bordered table-sm table-hover">
                         <thead>
                             <tr>
                                 <th width="30px">No</th>
                                 <th>Isi Pesan</th>
+                                <th>Cluster</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                                if(in_array('1', $hasil_cluster['hasil_clustering']['cluster1'])){
+                                if(isset($hasil_cluster['hasil_clustering'])){
+                                    if(in_array('1', $hasil_cluster['hasil_clustering']['cluster1'])){
                             ?>
                                 <tr>
-                                    <td><?= '1' ?></td>
+                                    <td><?= 'query' ?></td>
                                     <td><?= $query ?></td>
+                                    <td><?= '-'?></td>
                                 </tr>
                             <?php
                                 }
@@ -68,8 +86,10 @@
                                 <tr>
                                     <td><?= $value['id'] ?></td>
                                     <td><?= $value['teks'] ?></td>
+                                    <td><?= $value['cluster'] ?></td>
                                 </tr>
                             <?php      
+                                    }
                                 }
                             ?>
                         </tbody>
@@ -77,22 +97,26 @@
                 </div>
                 <div class="col">
                     <h3>Cluster 2</h3>
-                    <table id="tb_cluster2" class="table table-bordered table-hover">
+                    <table id="tb_cluster2" class="table table-bordered table-sm table-hover">
                         <thead>
                             <tr>
                                 <th width="30px">No</th>
                                 <th>Isi Pesan</th>
+                                <th>Cluster</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                                if(in_array('1', $hasil_cluster['hasil_clustering']['cluster2'])){
+                                if(isset($hasil_cluster['hasil_clustering'])){
+                                    if(in_array('1', $hasil_cluster['hasil_clustering']['cluster2'])){
                             ?>
                                 <tr>
-                                    <td><?= '1' ?></td>
+                                    <td><?= 'query' ?></td>
                                     <td><?= $query ?></td>
+                                    <td><?= '-'?></td>
                                 </tr>
                             <?php
+                                    }
                                 }
                             ?>
                             <?php
@@ -101,6 +125,7 @@
                                 <tr>
                                     <td><?= $value['id'] ?></td>
                                     <td><?= $value['teks'] ?></td>
+                                    <td><?= $value['cluster'] ?></td>
                                 </tr>
                             <?php      
                                 }
