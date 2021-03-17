@@ -6,6 +6,22 @@
             $this->load->model('M_Dataset', 'dataset');
     
         }
+        public function index(){
+            $query = $this->input->post('query');
+            $data['dataset'] = $this->dataset->get_dataset();
+            $data['hasil_cluster'] = $this->proses_klastering($query);
+            $data['cluster1_db'] = $this->dataset->get_cluster1();
+            $data['cluster2_db'] = $this->dataset->get_cluster2();
+
+            $this->load->view('templates/header');
+            $this->load->view('page/Clustering', $data);
+            $this->load->view('templates/menu_bar');
+            $this->load->view('templates/footer');
+            $this->load->view('page/script/clustering');
+            // reset cluster predict
+            $this->dataset->reset_cluster_predict();
+            
+        }
         public function generate_stem(){
             // panggil semua data dari database
             $data_sms = $this->dataset->get_all_dataset();
@@ -23,8 +39,10 @@
         }
         public function proses_klastering(){
             // Langkah 1 get query lalu lakukan preprocessing
-            // $query = 'harga cabai rawit';
-            $query = $this->input->post('query');
+            $query = 'mata uang rupiah';
+            // $query = 'ya boong baik';
+            // $query = 'tugas kuliah lagi deadline mahasiswa';
+            // $query = $this->input->post('query');
             $query = $this->preprocessing->preprocess($query);
             // print_r($query);
             
@@ -43,8 +61,32 @@
 
             // Langkah 3 proses perhitungan kmeans
             $hasil = $this->kmeans->get_rank($query, $arrayData);
+
+            // Langkah 4 update nilai cluster di database
+            $data_batch = [];
+            foreach ($hasil['hasil_clustering']['cluster1'] as $key => $value) {
+                if($value != '1'){
+                    // print_r([$value => '1']);
+                    $data_batch[] = array (
+                        'id' => $value,
+                        'cluster_predict' => '1',
+                    );
+                }
+            }
+            foreach ($hasil['hasil_clustering']['cluster2'] as $key => $value) {
+                if($value != '1'){
+                    // print_r([$value => '2']);
+                    $data_batch[] = array (
+                        'id' => $value,
+                        'cluster_predict' => '2',
+                    );
+                }
+            }
+            $this->dataset->update_cluster_predict($data_batch);
+
             // print_r($hasil);
-            echo json_encode($hasil);
+            return $hasil;
+            // echo json_encode($hasil);
         }
     }
     
