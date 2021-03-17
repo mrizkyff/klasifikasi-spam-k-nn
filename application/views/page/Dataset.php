@@ -110,4 +110,40 @@
 </div>
 <!-- !Modal Hapus -->
 
+<!-- Modal Tambah-->
+<div class="modal fade" id="modal_edit_dataset" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+            <form id="form_edit">
+                <input type="hidden" id="id_edit">
+                <div class="form-group">
+                    <label for="teks_dataset_edit">Teks Isi Pesan</label>
+                    <input type="text" class="form-control" id="teks_dataset_edit">
+                </div>
+                <div class="form-group">
+                    <label for="cluster_dataset_edit">Cluster</label>
+                    <select name="cluster_dataset_edit" id="cluster_dataset_edit" class="form-control">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button class="btn btn-primary" id="btn_edit">Simpan</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- !Modal Tambah -->
+
+
 

@@ -23,7 +23,7 @@
                                     '<td>'+response[i].cluster+'</td>'+
                                     '<td>'+response[i].tanggal+'</td>'+
                                     '<td>'+
-                                        '<a href="javascript:void(0);" class="btn btn-info btn-sm editRecord" data-id="' + response[i].id + '">Edit</a>' + ' ' +
+                                        '<a href="javascript:void(0);" class="btn btn-info btn-sm editRecord" data-id="' + response[i].id + '" data-teks="' + response[i].teks + '" data-cluster="' + response[i].cluster + '">Edit</a>' + ' ' +
                                         '<a href="javascript:void(0);" class="btn btn-danger btn-sm deleteRecord" data-id="' + response[i].id + '" data-teks="' + response[i].teks + '">Delete</a>' +
                                     '</td>'+
                                 '</tr>';
@@ -94,12 +94,35 @@
         // fungsi untuk menampilkan modal edit/update
         $('#show_dataset').on('click', '.editRecord', function (e) { 
             e.preventDefault();
-            alert('halo');
             $('#modal_edit_dataset').modal('show');
-            $("#id").val($(this).data('id'));
-            $("#teks_dataset").val($(this).data('teks_dataset'));
-            $("#cluster_dataset").val($(this).data('cluster_dataset'));
+            $("#id_edit").val($(this).data('id'));
+            $("#teks_dataset_edit").val($(this).data('teks'));
+            $("#cluster_dataset_edit").val($(this).data('cluster'));
         });
+        // fungsi aksi update/edit
+        $('#btn_edit').click(function (e) { 
+            e.preventDefault();
+            var id = $('#id_edit').val();
+            var teks = $('#teks_dataset_edit').val();
+            var cluster = $('#cluster_dataset_edit').val();
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url('dataset/edit')?>",
+                data: {id: id, teks:teks, cluster:cluster},
+                dataType: "JSON",
+                success: function (response) {
+                    if(response){
+                        alert('Data berhasil diupdate!');
+                        $('#modal_edit_dataset').modal('hide');
+                    }
+                    else{
+                        alert('Data gagal diupdate!');
+                    }
+                    showDataset();
+                }
+            });
+        });
+
 
     });
 

@@ -34,6 +34,20 @@
             $data = $this->dataset->delete_dataset($id);
             echo json_encode($data);
         }
+        public function edit(){
+            $tanggal = date("Y/m/d");
+            $id = $this->input->post('id');
+            $teks = $this->input->post('teks');
+            $cluster = $this->input->post('cluster');
+            $data = [
+                'teks' => $teks,
+                'stem' => implode(' ',$this->preprocessing->preprocess($teks)),
+                'cluster' => $cluster,
+                'tanggal' => $tanggal
+            ];
+            $data = $this->dataset->update_dataset($data, $id);
+            echo json_encode($data);
+        }
     }
     
 ?>

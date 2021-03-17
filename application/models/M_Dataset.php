@@ -35,6 +35,10 @@
             $this->db->where('id',$id);
 			return $this->db->delete('sms_fix');
         }
+        public function update_dataset($data,$id){
+            $this->db->where('id',$id);
+			return $this->db->update('sms_fix',$data);
+        }
     }
     
 ?>
