@@ -48,7 +48,7 @@
             <a href="<?php echo base_url()?>" class="nav-link">
               <i class="nav-icon fas fa-cubes"></i>
               <p>
-                Pengujian
+                Halaman Depan
               </p>
             </a>
           </li>
