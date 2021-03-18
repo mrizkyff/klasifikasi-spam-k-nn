@@ -113,7 +113,7 @@
             ]);
             echo json_encode($data);
             // reset cluster predict
-            // $this->dataset->reset_cluster_predict();
+            $this->dataset->reset_cluster_predict();
         }
     }
     
