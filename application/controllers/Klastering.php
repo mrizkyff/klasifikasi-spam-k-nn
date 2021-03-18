@@ -8,9 +8,15 @@
         }
         public function index(){
             $data['query'] = $this->input->post('query');
+            $data['c1'] = $this->input->post('c1');
+            $data['c2'] = $this->input->post('c2');
             $data['hasil_cluster']['kesimpulan'] = '';
             if(isset($data['query'])){
-                $data['hasil_cluster'] = $this->proses_klastering($data['query']);
+                if(($data['c1'] == '') && ($data['c2'] == '')){
+                    $data['c1'] = 2;
+                    $data['c2'] = 45;
+                }
+                $data['hasil_cluster'] = $this->proses_klastering($data['query'], $data['c1'], $data['c2']);
             }
 
             $data['dataset'] = $this->dataset->get_dataset();
@@ -44,7 +50,7 @@
             }
             echo json_encode($status);
         }
-        public function proses_klastering($query){
+        public function proses_klastering($query, $c1, $c2){
             // Langkah 1 get query lalu lakukan preprocessing
             // $query = 'mata uang rupiah';
             // $query = 'olahraga pandemi';
@@ -67,7 +73,7 @@
             // print_r($arrayData);
 
             // Langkah 3 proses perhitungan kmeans
-            $hasil = $this->kmeans->get_rank($query, $arrayData);
+            $hasil = $this->kmeans->get_rank($query, $arrayData, $c1, $c2);
 
             // Langkah 4 update nilai cluster di database
             $data_batch = [];

@@ -1,3 +1,5 @@
+<!-- judul halaman -->
+<div class="content-wrapper">
 <?php
     // print_r($hasil_cluster['hasil_clustering']['cluster1']);
     // die();
@@ -5,9 +7,9 @@
     // var_dump($query);
     // var_dump($hasil_cluster['kesimpulan']);
     // $query = 'mata uang rupiah';
+    // var_dump($c1);
+    // var_dump($c2);
 ?>
-<!-- judul halaman -->
-<div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -35,7 +37,7 @@
         <!-- /.card-header -->
         <div class="card-body">
             <form action="<?php echo base_url('klastering/index')?>" method="post">
-                <table width="100%">
+                <table width="100%" >
                     <tr>
                         <td width="150px">Query</td>
                         <td>
@@ -51,8 +53,19 @@
                                 <p>Pesan tersebut termasuk cluster <b><?php echo $hasil_cluster['kesimpulan']?></b></p>
                             </div>
                         </td>
-                        
                         <td width="150px" style="vertical-align: top;"><input type='submit' class="btn btn-primary" value="Hitung Cluster" id="btn_hitung_cluster"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <table >
+                                <tr>
+                                    <td width="120">Cari Centroid</td>
+                                    <td width=180px><input type="number" placeholder="Centroid 1" name="c1" value="<?= $c1?>" class="form-control form-control-sm"></td>
+                                    <td width=180px><input type="number" placeholder="Centroid 2" name="c2" value="<?= $c2+1?>" class="form-control form-control-sm"></td>
+                                </tr>
+                            </table>
+                        </td>
                     </tr>
                 </table>
             </form>

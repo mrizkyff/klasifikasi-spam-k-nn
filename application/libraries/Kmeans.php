@@ -5,14 +5,14 @@ class Kmeans
     public static function halo(){
         return 'halo';
     }
-    public static function get_rank($query, $dokumen, $debug=false)
+    public static function get_rank($query, $dokumen, $c1, $c2, $debug=false)
     {
         $term           = Kmeans::term($query, $dokumen, $debug);
         $dokumen_term   = Kmeans::dokumen_term($dokumen, $debug);
         $df             = Kmeans::df($term, $query, $dokumen_term, $debug);
         $idf            = Kmeans::idf($query, $dokumen_term, $df, $debug);
         $bobot          = Kmeans::bobot($query, $dokumen_term, $idf, $debug);
-        $euclidean      = Kmeans::jarak_euclidean($bobot, $debug);
+        $euclidean      = Kmeans::jarak_euclidean($bobot, $debug, $c1, $c2);
 
 
         return $euclidean;
@@ -274,13 +274,13 @@ class Kmeans
         return $means;
     }
 
-    public static function jarak_euclidean($bobot, $debug){
+    public static function jarak_euclidean($bobot, $debug, $c1, $c2){
 
         // print_r(['bobot' => $bobot]);
         // ITERASI 1
         // print_r(['--- iterasi 1 ---']);
-        $c1 = 2;
-        $c2 = 14;
+        // $c1 = 2;
+        // $c2 = 45;
 
         // berita
         // 2 9
@@ -299,6 +299,13 @@ class Kmeans
 
         // modul
         // 1 4
+
+        // sms fix
+        // 2 7
+        // 2 25
+        // 2 28
+        // 2 37
+        // 2 45 
 
 
         $cluster1 = Kmeans::hitung_euclidean($bobot, $c1);
@@ -346,11 +353,11 @@ class Kmeans
         $verdict = '';
         if(in_array('1', $hasil_clustering_baru['cluster1'])){
             // print_r(['hasil :' => 'ekonomi']);
-            $verdict = 'ekonomi';
+            $verdict = 'spam';
         }
         else if(in_array('1', $hasil_clustering_baru['cluster2'])){
             // print_r(['hasil :' => 'olahraga']);
-            $verdict = 'olahraga';
+            $verdict = 'real';
         }
 
         return [
