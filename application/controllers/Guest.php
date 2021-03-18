@@ -39,6 +39,8 @@
             $hasil = $this->kmeans->get_rank($query, $arrayData, $c1, $c2);
 
 
+            // reset cluster predict
+            $this->dataset->reset_cluster_predict();
             // print_r($hasil);
             // return $hasil;
             echo json_encode($hasil);

@@ -20,7 +20,7 @@
             $cek_login = $this->login->cek_login($data);
             if($cek_login >= 1){
                 $this->session->set_userdata('status_login','telah_login');
-                redirect(base_url("administrator"));
+                redirect(base_url("dataset"));
             }
             else{
                 redirect(base_url("login"));
