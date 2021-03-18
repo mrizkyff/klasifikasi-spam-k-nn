@@ -12,7 +12,7 @@
             $data['c2'] = $this->input->post('c2');
             $data['hasil_cluster']['kesimpulan'] = '';
             if(isset($data['query'])){
-                if(($data['c1'] == '') && ($data['c2'] == '')){
+                if(($data['c1'] == '') && ($data['c2'] == '') || ($data['c2'] == '1')){
                     $data['c1'] = 2;
                     $data['c2'] = 45;
                 }
