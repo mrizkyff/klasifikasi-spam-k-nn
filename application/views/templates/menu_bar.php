@@ -53,10 +53,10 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="<?php echo base_url()?>" class="nav-link">
-              <i class="nav-icon fas fa-cogs"></i>
+            <a href="<?php echo base_url('precision')?>" class="nav-link">
+              <i class="nav-icon fas fa-chart-bar"></i>
               <p>
-                Pengaturan
+                Precision & Recall
               </p>
             </a>
           </li>

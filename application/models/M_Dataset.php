@@ -48,6 +48,9 @@
             ','id, teks, cluster');
             return $this->datatables->generate();
         }
+        public function get_jumlah_dataset(){
+            return $this->db->get('sms_fix')->num_rows();
+        }
     }
     
 ?>
