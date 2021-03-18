@@ -39,6 +39,15 @@
             $this->db->where('id',$id);
 			return $this->db->update('sms_fix',$data);
         }
+        function json(){
+            $this->load->library('datatables');
+            $this->datatables->select('id, teks, stem, cluster, tanggal');
+            $this->datatables->from('sms_fix');
+            $this->datatables->add_column('aksi','<a href="javascript:void(0);" class="btn btn-info btn-sm editRecord" data-id="$1" data-teks="$2" data-cluster="$3">Edit</a>
+            <a href="javascript:void(0);" class="btn btn-danger btn-sm deleteRecord" data-id="$1" data-teks="$2">Delete</a>
+            ','id, teks, cluster');
+            return $this->datatables->generate();
+        }
     }
     
 ?>

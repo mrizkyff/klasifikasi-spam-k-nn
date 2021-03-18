@@ -30,17 +30,27 @@
             <table class="table table-sm" id="tb_dataset">
                 <thead>
                     <tr>
-                        <th width="50px">No</th>
-                        <th width="50px">ID</th>
+                        <th width="50px">No.</th>
                         <th>Teks</th>
                         <th>Hasil Stem</th>
                         <th width="75px">Cluster</th>
                         <th width="75px">Tgl</th>
-                        <th width="100px">Action</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="show_dataset">
-                </tbody>
+                
+
+                <tfoot>
+                    <tr>
+                        <th width="50px">No.</th>
+                        <th>Teks</th>
+                        <th>Hasil Stem</th>
+                        <th width="75px">Cluster</th>
+                        <th width="75px">Tgl</th>
+                        <th width="120px">Aksi</th>
+
+                    </tr>
+                </tfoot>
             </table>
         </div>
         <!-- /.card-body -->

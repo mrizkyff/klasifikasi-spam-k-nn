@@ -1,37 +1,57 @@
 <script type="text/javascript">
     $(document).ready(function () {
-        showDataset();
-        $('#tb_dataset').DataTable();
-
-
-        // fungsi  untuk menampilkan data ke dataTable
-        function showDataset(){
-            $.ajax({
-                type: "POST",
-                url: "<?php echo base_url('dataset/get_all_dataset') ?>",
-                dataType: "JSON",
-                async: 'false',
-                success: function (response) {
-                    var html = '';
-                    var i;
-                    for (i=0; i<response.length; i++){
-                        html += '<tr>'+
-                                    '<td>'+(i+1)+'</td>'+
-                                    '<td>'+response[i].id+'</td>'+
-                                    '<td>'+response[i].teks+'</td>'+
-                                    '<td>'+response[i].stem+'</td>'+
-                                    '<td>'+response[i].cluster+'</td>'+
-                                    '<td>'+response[i].tanggal+'</td>'+
-                                    '<td>'+
-                                        '<a href="javascript:void(0);" class="btn btn-info btn-sm editRecord" data-id="' + response[i].id + '" data-teks="' + response[i].teks + '" data-cluster="' + response[i].cluster + '">Edit</a>' + ' ' +
-                                        '<a href="javascript:void(0);" class="btn btn-danger btn-sm deleteRecord" data-id="' + response[i].id + '" data-teks="' + response[i].teks + '">Delete</a>' +
-                                    '</td>'+
-                                '</tr>';
+        $.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings)
+        {
+            return {
+                "iStart": oSettings._iDisplayStart,
+                "iEnd": oSettings.fnDisplayEnd(),
+                "iLength": oSettings._iDisplayLength,
+                "iTotal": oSettings.fnRecordsTotal(),
+                "iFilteredTotal": oSettings.fnRecordsDisplay(),
+                "iPage": Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength),
+                "iTotalPages": Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
+            };
+        };
+        var t = $("#tb_dataset").dataTable({
+            // ganti bahasa datatable jadi bahasa indonesia
+            "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Indonesian.json"
+            },
+            initComplete: function() {
+                var api = this.api();
+                $('#mytable_filter input')
+                        .off('.DT')
+                        .on('keyup.DT', function(e) {
+                            if (e.keyCode == 13) {
+                                api.search(this.value).draw();
                     }
-                    $('#show_dataset').html(html);
-                }
-            });
-        }
+                });
+            },
+            oLanguage: {
+                sProcessing: "loading..."
+            },
+            processing: true,
+            serverSide: true,
+            ajax: {"url": "<?php echo base_url('dataset/json')?>", "type": "POST"},
+            columns: [
+                {
+                    "data": "id",
+                    "orderable": false
+                },
+                {"data": "teks"},
+                {"data": "stem"},
+                {"data": "cluster"},
+                {"data": "tanggal"},
+                {"data": "aksi"},
+            ],
+            rowCallback: function(row, data, iDisplayIndex) {
+                var info = this.fnPagingInfo();
+                var page = info.iPage;
+                var length = info.iLength;
+                var index = page * length + (iDisplayIndex + 1);
+                $('td:eq(0)', row).html(index);
+            }
+        });
 
         // fungsi untuk simpan data ke database
         $('#btn_tambah_dataset').click(function (e) { 
@@ -57,11 +77,11 @@
                         }
                     }
                 });
-                showDataset();
+                $('#tb_dataset').DataTable().ajax.reload();
         });
 
         // fungsi untuk menampilkan modal hapus/delete
-        $('#show_dataset').on('click', '.deleteRecord', function (e) { 
+        $('#tb_dataset').on('click', '.deleteRecord', function (e) { 
             e.preventDefault();
             // alert('halo');
             $('#modal_hapus_dataset').modal('show');
@@ -86,13 +106,13 @@
                     else{
                         alert('Data Gagal di hapus!');
                     }
-                    showDataset();
+                    $('#tb_dataset').DataTable().ajax.reload();
                 }
             });
         });
 
         // fungsi untuk menampilkan modal edit/update
-        $('#show_dataset').on('click', '.editRecord', function (e) { 
+        $('#tb_dataset').on('click', '.editRecord', function (e) { 
             e.preventDefault();
             $('#modal_edit_dataset').modal('show');
             $("#id_edit").val($(this).data('id'));
@@ -118,7 +138,7 @@
                     else{
                         alert('Data gagal diupdate!');
                     }
-                    showDataset();
+                    $('#tb_dataset').DataTable().ajax.reload();
                 }
             });
         });

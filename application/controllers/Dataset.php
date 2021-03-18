@@ -16,6 +16,10 @@
             $data = $this->dataset->get_all_dataset();
             echo json_encode($data);
         }
+        function json(){
+            header('Content-Type: application/json');
+            echo ($this->dataset->json());
+        }
         public function simpan(){
             $tanggal = date("Y/m/d");
             $teks = $this->input->post('teks');
