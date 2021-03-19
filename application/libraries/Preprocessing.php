@@ -20,7 +20,7 @@ class Preprocessing
         $query_token    = Preprocessing::tokenizing($query_case);
         $query_filter   = Preprocessing::filtering($query_token);
         $query_dasar    = Preprocessing::stemming($query_filter);
-        // array unique untuk supaya menghilangkan term yang duplicate dalam satu dokumen
+        //menghilangkan term yang sma dlm dokumen
         return array_unique($query_dasar);
     }
 
@@ -65,7 +65,7 @@ class Preprocessing
 
         $string = preg_replace('/\b('.implode('|',$stopword).')\b/','',implode(" ", $query));
 
-        // Replaces multiple spasi with single spasi.
+        // Delete multiple space
         $string = preg_replace('!\s+!', ' ', $string);
         // String to array
         $string_array = explode(" ", $string);
@@ -91,15 +91,12 @@ class Preprocessing
 
         $stemmerFactory = new \Sastrawi\Stemmer\StemmerFactory();
         $stemmer = $stemmerFactory->createStemmer();
-        // key itu id/nama dokumen nya, value itu stringnya
+        // key itu id dokumen nya, 
+        // value itu stringnya
         foreach ($query as $key => $value) {
                 array_push($query_array, $stemmer->stem($value));
         }
         return $query_array;
     }
-
-
-    
-
 
 } // end class
