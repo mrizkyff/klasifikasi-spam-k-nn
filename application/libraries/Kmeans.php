@@ -2,9 +2,6 @@
 
 class Kmeans
 {
-    public static function halo(){
-        return 'halo';
-    }
     public static function get_rank($query, $dokumen, $c1, $c2, $debug=false)
     {
         $term           = Kmeans::term($query, $dokumen, $debug);
@@ -23,7 +20,7 @@ class Kmeans
         // query to string
         $query = implode(" ",  $query);
 
-        // dokumen to array | remove nested array karna bentuk sebelumnya tu nested array
+        // bikin array dokumen
         $arrayTampung = [];
         foreach ($dokumen as $key => $value) {
             foreach ($value as $key1 => $value1) {
@@ -33,12 +30,12 @@ class Kmeans
             }
         }
 
-        // menggabungkan query pencarian ke term dokumen
+        // membuat leksikon dengan dokumen dan query
         array_push($arrayTampung, $query);
 
-        // semua value $arrayTampung jadi satu string
+        // array ke string
         $string_term = implode(" ", $arrayTampung);
-        // semua string jadi array | untuk mendapatkan term
+        // membuat term dari string
         $string_array = explode(" ", $string_term);
 
         // mendapatkan term
@@ -57,9 +54,9 @@ class Kmeans
     {
         $arrayTampung = [];
         foreach ($dokumen as $key => $value) {
-            // semua string jadi array | untuk mendapatkan term
+            // string to array
             $string_array = explode(" ", $value['stem']);
-            // mendapatkan term
+            // generate term
             $word       = str_word_count($value['stem'], 1); // auto string to array
             $term       = array_count_values($word);
             array_push($arrayTampung, ['id_doc' => $value['id_doc'], 'stem' => $term]);
@@ -74,13 +71,13 @@ class Kmeans
 
     public static function df($term, $query, $dokumen_term, $debug)
     {
-        // start from 0 | start dari nol
+        // start from 0
         $arrayDf = [];
         foreach ($term as $key => $value) {
             $arrayDf[$key] = 0;
         }
 
-        // pengisian df dari $query
+        // df query
         foreach ($term as $key => $value) {
             foreach ($query as $key1 => $value1) {
                 if ($key == $value1) {
@@ -89,7 +86,7 @@ class Kmeans
             }
         }
 
-        // pengisian df dari dokumen
+        // df dokumen
         foreach ($term as $key => $value) {
             foreach ($dokumen_term as $key1 => $value1) {
                 foreach ($value1['stem'] as $key2 => $value2) {
@@ -143,7 +140,7 @@ class Kmeans
         $bobotDokumen['1'] = $bobotQuery;
 
 
-        // pembobotan setiap dokumen
+        // pembobotan dokumen
         foreach ($dokumen_term as $index => $dokumen) {
             $arrayTampung = [];
             foreach ($idf as $key => $value) {
@@ -153,13 +150,9 @@ class Kmeans
                     }
                 }
             }
-            // array_push($bobotDokumen, array('id_doc' => $dokumen['id_doc'], "stem" => $arrayTampung));
             $bobotDokumen[$dokumen['id_doc']] = $arrayTampung;
         }
 
-        // Array Bobot
-        // $arrayBobot = ["query" => $bobotQuery, "stem" => $bobotDokumen];
-        // array_push($bobotDokumen, array('id_doc' => 'q', 'stem' => '123'));
 
 
         return $bobotDokumen;
@@ -178,7 +171,6 @@ class Kmeans
             $temp = 0;	
             foreach ($value as $term => $nilainya) {
                 // jarak dari centroid
-                // print_r([$id_doc => [$term => $nilainya]]);
                 if($id_doc == $centroid){
                     if(array_key_exists($term, $c)){
                         // print_r([$id_doc => ['sama dengan centroid' => [$term => $nilainya-$nilainya]]]);
@@ -215,8 +207,6 @@ class Kmeans
     public static function bagi_cluster($jarak1, $jarak2){
         $cluster1 = [];
         $cluster2 = [];
-        // print_r($jarak1);
-        // die();
         foreach ($jarak1 as $key => $value) {
             foreach ($value as $key1 => $value1) {
                 if($value1 < $jarak2[$key][$key1]){
@@ -228,7 +218,6 @@ class Kmeans
                 else{
                     $cluster1[] = $key1;
                 }
-                // print_r([$jarak2[$key][$key1]]);
             }
         }
         return array(
@@ -246,10 +235,9 @@ class Kmeans
             foreach ($bobot as $key1 => $value1) {
                 foreach ($value1 as $key2 => $value2) {
                     if($key1 == $value){
-                        // kalau di kedua dokumen ada nilainya, langsung assign 0, biar bisa di tambahkan nilainya (first value)
+                        // jika sama, ada nilai di kedua dokumen, langsung assign 0
                         $sum[$key2] = 0;
                     }
-                    // print_r([$key2 => $value2]);
                 }
             }
         }
@@ -259,7 +247,6 @@ class Kmeans
                     if($key1 == $value){
                         $sum[$key2] += $value2;
                     }
-                    // print_r([$key2 => $value2]);
                 }
             }
         }
@@ -268,17 +255,12 @@ class Kmeans
             $means[$key] = ($n == 0) ? 1 : $value / $n;
         }
 
-        // print_r($means);
-        // die();
-
         return $means;
     }
 
     public static function jarak_euclidean($bobot, $debug, $c1, $c2){
 
-        // print_r(['bobot' => $bobot]);
         // ITERASI 1
-        // print_r(['--- iterasi 1 ---']);
         // $c1 = 2;
         // $c2 = 45;
 
@@ -310,11 +292,8 @@ class Kmeans
 
         $cluster1 = Kmeans::hitung_euclidean($bobot, $c1);
         $cluster2 = Kmeans::hitung_euclidean($bobot, $c2);
-        // print_r($cluster1);
-        // print_r($cluster2);
 
         $hasil_clustering = Kmeans::bagi_cluster($cluster1, $cluster2);
-        // print_r($hasil_clustering);
 
         $c1_temp = $hasil_clustering['cluster1'];
         $c2_temp = $hasil_clustering['cluster2'];
@@ -324,31 +303,27 @@ class Kmeans
 
         $x = 2;
         do {
-            // print_r(['--- iterasi '.$x.' ---']);
             $x+=1;
+            // menghitung centroid baru (means)
             $centroid1_baru = Kmeans::hitung_centroid($c1_temp, $bobot);
             $centroid2_baru = Kmeans::hitung_centroid($c2_temp, $bobot);
             
-            // print_r($centroid1_baru);
-            // print_r($centroid2_baru);
+            // menghitung jarak cluster dari centroid yang baru
             $cluster_baru1 = Kmeans::hitung_euclidean($bobot, $centroid1_baru, 'baru');
             $cluster_baru2 = Kmeans::hitung_euclidean($bobot, $centroid2_baru, 'baru');
             
-            // print_r($cluster_baru1);
-            // print_r($cluster_baru2);
-            
+            // membagi cluster sesuai dengan clusternya
             $hasil_clustering_baru = Kmeans::bagi_cluster($cluster_baru1, $cluster_baru2);
-            // print_r($hasil_clustering_baru);
             
             $c1_temp = $hasil_clustering_baru['cluster1'];
             $c2_temp = $hasil_clustering_baru['cluster2'];
 
-            // print_r(['sama?' => ($hasil_clustering === $hasil_clustering_baru)]);
+            // dibatasi hanya sampai 20 iterasi
             if($x == 20){
                 break;
             }
+            // berhenti jika hasil cluster lama dan baru itu sama
         } while (($hasil_clustering === $hasil_clustering_baru) != 1);
-        // print_r($hasil_clustering_baru);
 
         $verdict = '';
         if(in_array('1', $hasil_clustering_baru['cluster1'])){
