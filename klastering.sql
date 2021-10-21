@@ -34,7 +34,7 @@ CREATE TABLE `pengguna` (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `tanggal` date NOT NULL DEFAULT NULL
+  `tanggal` varchar(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
